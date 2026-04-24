@@ -5,6 +5,7 @@
     "SKIP_ENV_VALIDATION": "true"
   },
   "rewrites": [
+    { "source": "/assets/(.*)", "destination": "/assets/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
@@ -18,4 +19,5 @@
       ]
     }
   ]
+}
 }
