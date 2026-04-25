@@ -176,6 +176,34 @@ export async function createBill(input: CreateBillInput, userId: string) {
   return bill;
 }
 
+export async function getBills(userId: string) {
+  const { data, error } = await supabase
+    .from("bills")
+    .select("*")
+    .eq("created_by", userId)
+    .order("created_at", { ascending: false })
+    .limit(50);
+  if (error) throw error;
+  return data ?? [];
+}
+
+export async function getBillWithItems(billId: string) {
+  const { data: bill, error: billError } = await supabase
+    .from("bills")
+    .select("*")
+    .eq("id", billId)
+    .single();
+  if (billError) throw billError;
+
+  const { data: items, error: itemsError } = await supabase
+    .from("bill_items")
+    .select("*")
+    .eq("bill_id", billId);
+  if (itemsError) throw itemsError;
+
+  return { bill, items: items ?? [] };
+}
+
 // ==================== MEDICINES CATALOG ====================
 export async function getMedicinesCatalog() {
   const { data, error } = await supabase
