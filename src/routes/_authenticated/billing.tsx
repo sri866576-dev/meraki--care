@@ -187,9 +187,12 @@ function BillingPage() {
         };
         setViewingBillData(pdfData);
       })
-      .catch((e) => toast.error("Failed to load bill details"))
+      .catch((e) => {
+        toast.error("Failed to load bill details");
+        console.error(e);
+      })
       .finally(() => setLoadingBillDetail(false));
-  }, [viewingBillId, billPreviewOpen, hospital]);
+  }, [viewingBillId, billPreviewOpen]);
 
   // ---- Totals ----
   const { medItems, testItems, subtotal, gstAmount, total } = useMemo(() => {
@@ -330,13 +333,11 @@ function BillingPage() {
     setPreviewOpen(false);
   };
 
-  const handleViewSavedBill = async (billId: string) => {
-    try {
-      setViewingBillId(billId);
-      setBillPreviewOpen(true);
-    } catch (e) {
-      toast.error("Failed to load bill");
-    }
+  const handleViewSavedBill = (billId: string) => {
+    setViewingBillData(null);
+    setLoadingBillDetail(true);
+    setViewingBillId(billId);
+    setBillPreviewOpen(true);
   };
 
   const handleDownloadSavedBill = async (billId: string) => {
