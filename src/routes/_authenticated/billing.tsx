@@ -34,6 +34,7 @@ import {
   getBillWithItems,
 } from "@/lib/queries";
 import { generateBillPdf } from "@/lib/pdf";
+import type { BillPdfData } from "@/lib/pdf";
 
 export const Route = createFileRoute("/_authenticated/billing")({
   component: BillingPage,
@@ -341,7 +342,35 @@ function BillingPage() {
   const handleDownloadSavedBill = async (billId: string) => {
     try {
       const { bill, items } = await getBillWithItems(billId);
-      const doc = generateBillPdf(buildPdfData(bill.invoice_no));
+      const pdfData: BillPdfData = {
+        hospital: hospital ?? {
+          name: "Meraki Care",
+          address: "",
+          phone: "",
+          email: "",
+          gstin: "",
+        },
+        invoice: {
+          no: bill.invoice_no,
+          date: new Date(bill.created_at).toLocaleDateString("en-GB"),
+          time: new Date(bill.created_at).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
+        },
+        patient: {
+          name: bill.patient_name,
+          phone: bill.patient_phone,
+          age: bill.patient_age,
+          gender: bill.patient_gender || undefined,
+          address: bill.patient_address || undefined,
+          doctor: bill.doctor_name || undefined,
+        },
+        medicines: items.filter((i: any) => i.type === "medicine"),
+        tests: items.filter((i: any) => i.type === "test"),
+        subtotal: bill.subtotal,
+        gstPercent: bill.gst_percent,
+        gstAmount: bill.gst_amount,
+        total: bill.total,
+      };
+      const doc = generateBillPdf(pdfData);
       doc.save(`bill-${bill.invoice_no}.pdf`);
       toast.success("PDF downloaded");
     } catch (e) {
@@ -847,8 +876,6 @@ function Row({ label, value }: { label: string; value: number }) {
     </div>
   );
 }
-
-import type { BillPdfData } from "@/lib/pdf";
 
 function BillPreview({ data }: { data: BillPdfData }) {
   return (

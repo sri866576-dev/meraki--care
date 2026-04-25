@@ -47,21 +47,21 @@ function SettingsPage() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-6">
+    <div className="max-w-5xl mx-auto px-2 sm:px-4 py-3 sm:py-6">
       <motion.h1
         initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-        className="text-3xl font-bold text-gradient mb-6"
+        className="text-2xl sm:text-3xl font-bold text-gradient mb-4 sm:mb-6"
       >
         Settings
       </motion.h1>
       <Tabs defaultValue="hospital">
-        <TabsList className="grid w-full grid-cols-6 mb-6">
-          <TabsTrigger value="hospital"><Building className="h-4 w-4 mr-2" />Hospital</TabsTrigger>
-          <TabsTrigger value="gst"><Percent className="h-4 w-4 mr-2" />GST</TabsTrigger>
-          <TabsTrigger value="doctors"><Stethoscope className="h-4 w-4 mr-2" />Doctors</TabsTrigger>
-          <TabsTrigger value="medicines"><Pill className="h-4 w-4 mr-2" />Medicines</TabsTrigger>
-          <TabsTrigger value="tests"><FlaskConical className="h-4 w-4 mr-2" />Tests</TabsTrigger>
-          <TabsTrigger value="staff"><Users className="h-4 w-4 mr-2" />Staff</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-3 sm:grid-cols-6 gap-1 mb-4 sm:mb-6 h-auto">
+          <TabsTrigger value="hospital" className="text-xs sm:text-sm px-1 sm:px-2 py-2"><Building className="h-3 w-3 sm:h-4 sm:w-4 mr-1" /><span className="hidden sm:inline">Hospital</span><span className="sm:hidden">Hospital</span></TabsTrigger>
+          <TabsTrigger value="gst" className="text-xs sm:text-sm px-1 sm:px-2 py-2"><Percent className="h-3 w-3 sm:h-4 sm:w-4 mr-1" /><span className="hidden sm:inline">GST</span><span className="sm:hidden">GST</span></TabsTrigger>
+          <TabsTrigger value="doctors" className="text-xs sm:text-sm px-1 sm:px-2 py-2"><Stethoscope className="h-3 w-3 sm:h-4 sm:w-4 mr-1" /><span className="hidden sm:inline">Doctors</span><span className="sm:hidden">Dr</span></TabsTrigger>
+          <TabsTrigger value="medicines" className="text-xs sm:text-sm px-1 sm:px-2 py-2"><Pill className="h-3 w-3 sm:h-4 sm:w-4 mr-1" /><span className="hidden sm:inline">Medicines</span><span className="sm:hidden">Med</span></TabsTrigger>
+          <TabsTrigger value="tests" className="text-xs sm:text-sm px-1 sm:px-2 py-2"><FlaskConical className="h-3 w-3 sm:h-4 sm:w-4 mr-1" /><span className="hidden sm:inline">Tests</span><span className="sm:hidden">Test</span></TabsTrigger>
+          <TabsTrigger value="staff" className="text-xs sm:text-sm px-1 sm:px-2 py-2"><Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1" /><span className="hidden sm:inline">Staff</span><span className="sm:hidden">Staff</span></TabsTrigger>
         </TabsList>
         <TabsContent value="hospital"><HospitalTab /></TabsContent>
         <TabsContent value="gst"><GstTab /></TabsContent>
@@ -89,28 +89,45 @@ function HospitalTab() {
   };
   return (
     <Card className="shadow-elegant border-0">
-      <CardHeader><CardTitle>Hospital Details</CardTitle></CardHeader>
-      <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2 md:col-span-2"><Label>Name</Label><Input value={data.name} onChange={(e) => setData({ ...data, name: e.target.value })} /></div>
-        <div className="space-y-2 md:col-span-2"><Label>Address</Label><Textarea rows={2} value={data.address} onChange={(e) => setData({ ...data, address: e.target.value })} /></div>
+      <CardHeader><CardTitle className="text-base sm:text-lg">Hospital Details</CardTitle></CardHeader>
+      <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+        <div className="space-y-2 sm:col-span-2">
+          <Label className="text-xs sm:text-sm">Name</Label>
+          <Input value={data.name} onChange={(e) => setData({ ...data, name: e.target.value })} className="text-sm h-10 sm:h-11" />
+        </div>
+        <div className="space-y-2 sm:col-span-2">
+          <Label className="text-xs sm:text-sm">Address</Label>
+          <Textarea rows={2} value={data.address} onChange={(e) => setData({ ...data, address: e.target.value })} className="text-sm" />
+        </div>
         <div className="space-y-2">
-          <Label>Phone (10 digits)</Label>
+          <Label className="text-xs sm:text-sm">Phone (10 digits)</Label>
           <Input
             value={data.phone}
             inputMode="numeric"
             maxLength={10}
             placeholder="9876543210"
             onChange={(e) => setData({ ...data, phone: e.target.value.replace(/\D/g, "").slice(0, 10) })}
+            className="text-sm h-10 sm:h-11"
           />
           {data.phone && data.phone.length > 0 && data.phone.length < 10 && (
             <p className="text-xs text-destructive">Phone must be 10 digits</p>
           )}
         </div>
-        <div className="space-y-2"><Label>Email</Label><Input type="email" value={data.email} onChange={(e) => setData({ ...data, email: e.target.value })} /></div>
-        <div className="space-y-2"><Label>GSTIN</Label><Input value={data.gstin} onChange={(e) => setData({ ...data, gstin: e.target.value })} /></div>
-        <div className="md:col-span-2">
-          <Button onClick={save} disabled={saving} className="gradient-primary text-primary-foreground border-0">
-            {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : "Save Hospital Details"}
+        <div className="space-y-2">
+          <Label className="text-xs sm:text-sm">Email</Label>
+          <Input type="email" value={data.email} onChange={(e) => setData({ ...data, email: e.target.value })} className="text-sm h-10 sm:h-11" />
+        </div>
+        <div className="space-y-2">
+          <Label className="text-xs sm:text-sm">GSTIN</Label>
+          <Input value={data.gstin} onChange={(e) => setData({ ...data, gstin: e.target.value })} className="text-sm h-10 sm:h-11" />
+        </div>
+        <div className="space-y-2">
+          <Label className="text-xs sm:text-sm">GST %</Label>
+          <Input type="number" min={0} max={100} step="0.01" value={data.gst_percent} onChange={(e) => setData({ ...data, gst_percent: e.target.value })} className="text-sm h-10 sm:h-11" />
+        </div>
+        <div className="sm:col-span-2">
+          <Button onClick={save} disabled={saving} className="gradient-primary text-primary-foreground border-0 w-full text-sm h-10 sm:h-11">
+            {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <><Save className="h-4 w-4 mr-2" />Save Hospital Details</>}
           </Button>
         </div>
       </CardContent>
@@ -133,16 +150,17 @@ function GstTab() {
     toast.success("GST updated");
   };
   return (
-    <Card className="shadow-elegant border-0">
-      <CardHeader><CardTitle>GST Configuration</CardTitle></CardHeader>
-      <CardContent className="space-y-4 max-w-sm">
+    <Card className="shadow-elegant border-0 max-w-md">
+      <CardHeader><CardTitle className="text-base sm:text-lg">GST Configuration</CardTitle></CardHeader>
+      <CardContent className="space-y-4">
         <div className="space-y-2">
-          <Label>GST Percentage</Label>
+          <Label className="text-xs sm:text-sm">GST Percentage (%)</Label>
           <Input type="number" min={0} max={100} step="0.01" value={data.gst_percent}
-            onChange={(e) => setData({ ...data, gst_percent: e.target.value })} />
+            onChange={(e) => setData({ ...data, gst_percent: e.target.value })} className="text-sm h-10 sm:h-11" />
+          <p className="text-xs text-muted-foreground">Enter value between 0 and 100</p>
         </div>
-        <Button onClick={save} disabled={saving} className="gradient-primary text-primary-foreground border-0">
-          {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : "Save GST"}
+        <Button onClick={save} disabled={saving} className="gradient-primary text-primary-foreground border-0 w-full text-sm h-10 sm:h-11">
+          {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <><Save className="h-4 w-4 mr-2" />Save GST</>}
         </Button>
       </CardContent>
     </Card>
@@ -171,33 +189,34 @@ function DoctorsTab() {
     toast.success("Doctor removed"); reload();
   };
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 sm:space-y-4">
       <Card className="shadow-elegant border-0">
-        <CardHeader><CardTitle>Add Doctor</CardTitle></CardHeader>
-        <CardContent className="grid grid-cols-1 md:grid-cols-4 gap-3">
-          <Input placeholder="Name *" value={name} onChange={(e) => setName(e.target.value)} />
-          <Input placeholder="Specialization" value={spec} onChange={(e) => setSpec(e.target.value)} />
+        <CardHeader><CardTitle className="text-base sm:text-lg">Add Doctor</CardTitle></CardHeader>
+        <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
+          <Input placeholder="Name *" value={name} onChange={(e) => setName(e.target.value)} className="text-xs sm:text-sm h-9 sm:h-10" />
+          <Input placeholder="Specialization" value={spec} onChange={(e) => setSpec(e.target.value)} className="text-xs sm:text-sm h-9 sm:h-10" />
           <Input
             placeholder="Phone (10 digits)"
             value={phone}
             inputMode="numeric"
             maxLength={10}
             onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
+            className="text-xs sm:text-sm h-9 sm:h-10"
           />
-          <Button onClick={add} disabled={adding} className="gradient-accent text-accent-foreground border-0">
-            {adding ? <Loader2 className="h-4 w-4 animate-spin" /> : <><Plus className="h-4 w-4 mr-1" />Add</>}
+          <Button onClick={add} disabled={adding} className="gradient-accent text-accent-foreground border-0 text-xs sm:text-sm h-9 sm:h-10">
+            {adding ? <Loader2 className="h-3 w-3 animate-spin" /> : <><Plus className="h-3 w-3 mr-1" />Add</>}
           </Button>
         </CardContent>
       </Card>
       <Card className="shadow-elegant border-0">
-        <CardHeader><CardTitle>All Doctors ({docs.length})</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-base sm:text-lg">All Doctors ({docs.length})</CardTitle></CardHeader>
         <CardContent>
           {docs.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No doctors yet. Add one above.</p>
+            <p className="text-xs sm:text-sm text-muted-foreground">No doctors yet. Add one above.</p>
           ) : (
-            <ul className="divide-y">
+            <ul className="divide-y space-y-0">
               {docs.map((d) => (
-                <motion.li key={d.id} layout className="py-3 flex items-center justify-between">
+                <motion.li key={d.id} layout className="py-2 sm:py-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
                   <div>
                     <p className="font-medium">Dr. {d.name}</p>
                     <p className="text-xs text-muted-foreground">{d.specialization || "—"} · {d.phone || "no phone"}</p>
