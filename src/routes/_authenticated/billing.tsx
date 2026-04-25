@@ -728,80 +728,80 @@ function BillingPage() {
                 </p>
               </div>
             </div>
-
-            {/* Preview dialog */}
-            <Dialog open={previewOpen} onOpenChange={(open) => { if (!open) { setPreviewOpen(false); if (savedInvoice) resetForm(); }}}>
-              <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto mx-2 rounded-lg">
-                <DialogHeader>
-                  <DialogTitle className="text-primary text-base sm:text-lg">Bill Preview</DialogTitle>
-                </DialogHeader>
-                <BillPreview data={buildPdfData(savedInvoice ?? "Preview — not yet saved")} />
-                <DialogFooter className="gap-2 flex-col sm:flex-row">
-                  {!savedInvoice ? (
-                    <>
-                      <Button variant="outline" onClick={() => setPreviewOpen(false)} className="text-sm h-9 sm:h-10">
-                        Edit
-                      </Button>
-                      <Button
-                        onClick={handleSave}
-                        disabled={saving}
-                        className="gradient-primary text-primary-foreground border-0 text-sm h-9 sm:h-10"
-                      >
-                        {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
-                        Confirm & Save
-                      </Button>
-                    </>
-                  ) : (
-                    <>
-                      <Button variant="outline" onClick={resetForm} className="text-sm h-9 sm:h-10">New Bill</Button>
-                      <Button
-                        onClick={handleDownload}
-                        className="gradient-accent text-accent-foreground border-0 text-sm h-9 sm:h-10"
-                      >
-                        <Download className="h-4 w-4 mr-2" /> Download PDF
-                      </Button>
-                    </>
-                  )}
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-
-            {/* Saved Bill View Dialog */}
-            <Dialog open={billPreviewOpen} onOpenChange={(open) => {
-              setBillPreviewOpen(open);
-              if (!open) {
-                setViewingBillId(null);
-                setViewingBillData(null);
-              }
-            }}>
-              <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto mx-2 rounded-lg">
-                <DialogHeader>
-                  <DialogTitle className="text-primary text-base sm:text-lg">Bill Preview</DialogTitle>
-                </DialogHeader>
-                {loadingBillDetail ? (
-                  <div className="flex justify-center items-center py-12">
-                    <Loader2 className="h-6 w-6 animate-spin text-primary" />
-                  </div>
-                ) : viewingBillData ? (
-                  <>
-                    <BillPreview data={viewingBillData} />
-                    <DialogFooter className="gap-2 flex-col sm:flex-row">
-                      <Button variant="outline" onClick={() => setBillPreviewOpen(false)} className="text-sm h-9 sm:h-10">
-                        Close
-                      </Button>
-                      <Button
-                        onClick={() => viewingBillId && handleDownloadSavedBill(viewingBillId)}
-                        className="gradient-accent text-accent-foreground border-0 text-sm h-9 sm:h-10"
-                      >
-                        <Download className="h-4 w-4 mr-2" /> Download PDF
-                      </Button>
-                    </DialogFooter>
-                  </>
-                ) : null}
-              </DialogContent>
-            </Dialog>
           </div>
         )}
+
+        {/* Create Bill Preview Dialog - Outside of tab conditional */}
+        <Dialog open={previewOpen} onOpenChange={(open) => { if (!open) { setPreviewOpen(false); if (savedInvoice) resetForm(); }}}>
+          <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto mx-2 rounded-lg">
+            <DialogHeader>
+              <DialogTitle className="text-primary text-base sm:text-lg">Bill Preview</DialogTitle>
+            </DialogHeader>
+            <BillPreview data={buildPdfData(savedInvoice ?? "Preview — not yet saved")} />
+            <DialogFooter className="gap-2 flex-col sm:flex-row">
+              {!savedInvoice ? (
+                <>
+                  <Button variant="outline" onClick={() => setPreviewOpen(false)} className="text-sm h-9 sm:h-10">
+                    Edit
+                  </Button>
+                  <Button
+                    onClick={handleSave}
+                    disabled={saving}
+                    className="gradient-primary text-primary-foreground border-0 text-sm h-9 sm:h-10"
+                  >
+                    {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
+                    Confirm & Save
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button variant="outline" onClick={resetForm} className="text-sm h-9 sm:h-10">New Bill</Button>
+                  <Button
+                    onClick={handleDownload}
+                    className="gradient-accent text-accent-foreground border-0 text-sm h-9 sm:h-10"
+                  >
+                    <Download className="h-4 w-4 mr-2" /> Download PDF
+                  </Button>
+                </>
+              )}
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Saved Bill View Dialog - Outside of tab conditional */}
+        <Dialog open={billPreviewOpen} onOpenChange={(open) => {
+          setBillPreviewOpen(open);
+          if (!open) {
+            setViewingBillId(null);
+            setViewingBillData(null);
+          }
+        }}>
+          <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto mx-2 rounded-lg">
+            <DialogHeader>
+              <DialogTitle className="text-primary text-base sm:text-lg">Bill Preview</DialogTitle>
+            </DialogHeader>
+            {loadingBillDetail ? (
+              <div className="flex justify-center items-center py-12">
+                <Loader2 className="h-6 w-6 animate-spin text-primary" />
+              </div>
+            ) : viewingBillData ? (
+              <>
+                <BillPreview data={viewingBillData} />
+                <DialogFooter className="gap-2 flex-col sm:flex-row">
+                  <Button variant="outline" onClick={() => setBillPreviewOpen(false)} className="text-sm h-9 sm:h-10">
+                    Close
+                  </Button>
+                  <Button
+                    onClick={() => viewingBillId && handleDownloadSavedBill(viewingBillId)}
+                    className="gradient-accent text-accent-foreground border-0 text-sm h-9 sm:h-10"
+                  >
+                    <Download className="h-4 w-4 mr-2" /> Download PDF
+                  </Button>
+                </DialogFooter>
+              </>
+            ) : null}
+          </DialogContent>
+        </Dialog>
 
         {/* Saved Bills Tab */}
         {activeTab === "saved" && (
