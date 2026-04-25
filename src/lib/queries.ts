@@ -8,11 +8,12 @@ export async function signInWithPassword(email: string, password: string) {
 }
 
 export async function signUpFirstAdmin(email: string, password: string, fullName: string) {
+  const appUrl = import.meta.env.VITE_APP_URL || window.location.origin;
   return supabase.auth.signUp({
     email,
     password,
     options: {
-      emailRedirectTo: `${window.location.origin}/billing`,
+      emailRedirectTo: `${appUrl}/billing`,
       data: { full_name: fullName },
     },
   });
@@ -23,8 +24,9 @@ export async function signOut() {
 }
 
 export async function sendPasswordReset(email: string) {
+  const appUrl = import.meta.env.VITE_APP_URL || window.location.origin;
   return supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${window.location.origin}/reset-password`,
+    redirectTo: `${appUrl}/reset-password`,
   });
 }
 
